@@ -1,0 +1,880 @@
+openapi: 3.0.0
+info:
+  description: This is a API for tourism to search destinations
+  version: 1.0.0
+  title: Tourism API
+  contact:
+    email: muhammadarash@gmail.com
+servers:
+  - url: http://localhost:8080
+tags:
+  - name: destination
+  - name: image
+  - name: user
+  - name: bookmark
+  - name: view
+  - name: rating
+  - name: search
+paths:
+  /destination:
+    post:
+      tags:
+        - destination
+      summary: Add a new destination to the store
+      description: This can only be done by the logged in admin
+      responses:
+        '200':
+          description: Success adding new destination
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    $ref: '#/components/schemas/Destination'
+        '401':
+          description: The requester was not an admin
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    $ref: '#/components/schemas/Error'
+        '422':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    $ref: '#/components/schemas/Error'
+      security:
+        - bearerAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/Destination'
+  /destination/{destinationUUID}:
+    delete:
+      tags:
+        - destination
+      summary: Delete a destination from the store
+      description: This can only be done by the logged in admin
+      parameters:
+        - name: destinationUUID
+          in: path
+          description: Destination uuid to delete
+          required: true
+          schema:
+            type: string
+            format: byte
+      responses:
+        '200':
+          description: Success deleting a destination
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    nullable: true
+        '400':
+          description: Failed for deleting a destination
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    $ref: '#/components/schemas/Error'
+        '401':
+          description: The requester was not an admin
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    $ref: '#/components/schemas/Error'
+      security:
+        - bearerAuth: []
+  /image/{destinationUUID}:
+    post:
+      tags:
+        - image
+      summary: Add an image for a destination
+      description: This can only be done by the logged in admin
+      parameters:
+        - name: destinationUUID
+          in: path
+          description: Destination uuid to add image of destination
+          required: true
+          schema:
+            type: string
+            format: byte
+      responses:
+        '200':
+          description: Success adding an image
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    $ref: '#/components/schemas/Image'
+        '400':
+          description: Failed for Adding an image
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    $ref: '#/components/schemas/Error'
+        '401':
+          description: The requester was not an admin
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    $ref: '#/components/schemas/Error'
+        '422':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    $ref: '#/components/schemas/Error'
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: File image of destination
+        required: true
+        content:
+          image:
+            schema:
+              type: string
+              format: binary
+  /image/{imageUUID}:
+    delete:
+      tags:
+        - image
+      summary: Delete image of destinations by uuid
+      description: This can only be done by the logged in admin
+      parameters:
+        - name: imageUUID
+          in: path
+          description: ID of the image that needs to be deleted
+          required: true
+          schema:
+            type: string
+            format: byte
+      responses:
+        '200':
+          description: Success deleting an image
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    nullable: true
+        '400':
+          description: Failed for deleting an image
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    $ref: '#/components/schemas/Error'
+        '401':
+          description: The requester was not an admin
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    $ref: '#/components/schemas/Error'
+      security:
+        - bearerAuth: []
+  /user/register:
+    post:
+      tags:
+        - user
+      summary: Create user
+      responses:
+        '200':
+          description: Success registering an account
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    $ref: '#/components/schemas/UserRegistered'
+        '422':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    $ref: '#/components/schemas/Error'
+      requestBody:
+        $ref: '#/components/requestBodies/UserRegistered'
+  /user/login:
+    post:
+      tags:
+        - user
+      summary: Logs user into the system
+      responses:
+        '200':
+          description: Success logging in account
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    $ref: '#/components/schemas/UserLogged'
+        '400':
+          description: Failed for logging in account
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    $ref: '#/components/schemas/Error'
+        '422':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    $ref: '#/components/schemas/Error'
+      requestBody:
+        $ref: '#/components/requestBodies/UserLogged'
+  /user/{userUUID}:
+    delete:
+      tags:
+        - user
+      summary: Delete user
+      description: This can only be done by the logged in admin
+      parameters:
+        - name: userUUID
+          in: path
+          description: The user uuid that needs to be deleted
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success logging in account
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    nullable: true
+        '400':
+          description: Failed for deleting a user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    $ref: '#/components/schemas/Error'
+        '401':
+          description: The requester was not an admin
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    $ref: '#/components/schemas/Error'
+      security:
+        - bearerAuth: []
+  /bookmark:
+    post:
+      tags:
+        - bookmark
+      summary: Add an bookmark of destination
+      description: This can only be done by the logged in user
+      responses:
+        '200':
+          description: Success adding a bookmark
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    $ref: '#/components/schemas/Bookmark'
+        '422':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    $ref: '#/components/schemas/Error'
+      security:
+        - bearerAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/Bookmark'
+  /view:
+    post:
+      tags:
+        - view
+      summary: Add an view of destination
+      description: This can only be done by the logged in user
+      operationId: placeOrder
+      responses:
+        '200':
+          description: Success adding a bookmark
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    $ref: '#/components/schemas/View'
+        '422':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    $ref: '#/components/schemas/Error'
+      security:
+        - bearerAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/View'
+  /rating:
+    post:
+      tags:
+        - rating
+      summary: Add an rating of destination
+      description: This can only be done by the logged in user
+      responses:
+        '200':
+          description: Success adding a bookmark
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    $ref: '#/components/schemas/Rating'
+        '422':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    $ref: '#/components/schemas/Error'
+      security:
+        - bearerAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/Rating'
+  /search/destinations/{userCoordinate}:
+    get:
+      tags:
+        - search
+      summary: Add a new destination to the store
+      description: This can only be done by the logged in admin
+      parameters:
+        - name: userCoordinate
+          in: path
+          description: User coordinate for knowing user location
+          required: true
+          schema:
+            type: string
+            format: byte
+        - name: limit
+          in: query
+          description: The numbers of items to return
+          required: true
+          schema:
+            type: integer
+        - name: page
+          in: query
+          description: The page of items to return
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success getting destinations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    $ref: '#/components/schemas/Destinations'
+        '400':
+          description: Failed for getting destinations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    $ref: '#/components/schemas/Error'
+      security:
+        - bearerAuth: []
+  /search/destinations/nearby/{userCoordinate}:
+    get:
+      tags:
+        - search
+      summary: Add a new destination to the store
+      description: This can only be done by the logged in admin
+      parameters:
+        - name: userCoordinate
+          in: path
+          description: User coordinate for knowing user location
+          required: true
+          schema:
+            type: string
+            format: byte
+        - name: type
+          in: query
+          description: The type of destinations as a parameter for finding
+          required: true
+          schema:
+            type: string
+            enum:
+              - all
+              - beach
+              - natural
+              - towns
+              - heritage
+        - name: rating
+          in: query
+          description: Use rating as a parameter for finding
+          required: true
+          schema:
+            type: boolean
+        - name: popularity
+          in: query
+          description: Use popularity as a parameter for finding
+          required: true
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: Success getting nearby destinations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    $ref: '#/components/schemas/NearbyDestinations'
+        '400':
+          description: Failed for getting nearby destinations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    $ref: '#/components/schemas/Error'
+      security:
+        - bearerAuth: []
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+components:
+  schemas:
+    Meta:
+      type: object
+      properties:
+        message:
+          type: string
+          format: byte
+        code:
+          type: integer
+          format: int64
+        status:
+          type: string
+          format: byte
+    Destinations:
+      type: array
+      items:
+        $ref: '#/components/schemas/SearchedDestination'
+    SearchedDestination:
+      type: object
+      properties:
+        id:
+          type: string
+          format: byte
+        name:
+          type: string
+          format: byte
+        type:
+          type: string
+          description: Destination Type
+          enum:
+            - beach
+            - natural
+            - towns
+            - heritage
+        geo_hash:
+          type: string
+          format: byte
+        distance:
+          type: string
+          format: byte
+    NearbyDestinations:
+      type: array
+      items:
+        $ref: '#/components/schemas/SearchedNearbyDestination'
+    SearchedNearbyDestination:
+      type: object
+      properties:
+        id:
+          type: string
+          format: byte
+        name:
+          type: string
+          format: byte
+        type:
+          type: string
+          description: Destination Type
+          enum:
+            - beach
+            - natural
+            - towns
+            - heritage
+        geo_hash:
+          type: string
+          format: byte
+        view_amount:
+          type: integer
+          format: int64
+        rating:
+          type: number
+          format: float
+        distance:
+          type: string
+          format: byte
+    Destination:
+      type: object
+      properties:
+        id:
+          type: string
+          format: byte
+        name:
+          type: string
+          format: byte
+        type:
+          type: string
+          description: Destination Type
+          enum:
+            - beach
+            - natural
+            - towns
+            - heritage
+        geo_hash:
+          type: string
+          format: byte
+    Image:
+      type: object
+      properties:
+        id:
+          type: string
+          format: byte
+        destination_id:
+          type: string
+          format: byte
+        file_name:
+          type: string
+          format: byte
+    Bookmark:
+      type: object
+      properties:
+        id:
+          type: string
+          format: byte
+        user_id:
+          type: string
+          format: byte
+        destination_id:
+          type: string
+          format: byte
+    View:
+      type: object
+      properties:
+        id:
+          type: string
+          format: byte
+        destination_id:
+          type: string
+          format: byte
+        user_id:
+          type: string
+          format: byte
+    Rating:
+      type: object
+      properties:
+        id:
+          type: string
+          format: byte
+        destination_id:
+          type: string
+          format: byte
+        user_id:
+          type: string
+          format: byte
+        rate:
+          type: integer
+          description: Destination Rate
+          enum:
+            - 1
+            - 2
+            - 3
+            - 4
+            - 5
+    UserRegistered:
+      type: object
+      properties:
+        id:
+          type: string
+          format: byte
+        name:
+          type: string
+          format: byte
+        email:
+          type: string
+          format: byte
+        role:
+          type: string
+          format: byte
+    UserLogged:
+      type: object
+      properties:
+        id:
+          type: string
+          format: byte
+        name:
+          type: string
+          format: byte
+        email:
+          type: string
+          format: byte
+        role:
+          type: string
+          format: byte
+        token:
+          type: string
+          format: byte
+    DestinationRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          format: byte
+        type:
+          type: string
+          description: Destination Type
+          enum:
+            - beach
+            - natural
+            - towns
+            - heritage
+        geo_hash:
+          type: string
+          format: byte
+    BookmarkRequest:
+      type: object
+      properties:
+        user_id:
+          type: string
+          format: byte
+        destination_id:
+          type: string
+          format: byte
+    ViewRequest:
+      type: object
+      properties:
+        destination_id:
+          type: string
+          format: byte
+    RatingRequest:
+      type: object
+      properties:
+        destination_id:
+          type: string
+          format: byte
+        user_id:
+          type: string
+          format: byte
+        rate:
+          type: integer
+          description: Destination Rate
+          enum:
+            - 1
+            - 2
+            - 3
+            - 4
+            - 5
+    UserRegisteredRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          format: byte
+        email:
+          type: string
+          format: byte
+        password:
+          type: string
+          format: byte
+    UserLoggedRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: byte
+        password:
+          type: string
+          format: byte
+    Error:
+      type: object
+      properties:
+        errors:
+          type: string
+          format: byte
+  requestBodies:
+    Destination:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DestinationRequest'
+      description: Destination object that needs to be added to the store
+      required: true
+    Bookmark:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BookmarkRequest'
+      description: Bookmark object that needs to be added to the store
+      required: true
+    View:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ViewRequest'
+      description: View object that needs to be added
+      required: true
+    Rating:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RatingRequest'
+      description: Rating object that needs to be added
+      required: true
+    UserRegistered:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserRegisteredRequest'
+      description: User object that needs to be added to the store
+      required: true
+    UserLogged:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserLoggedRequest'
+      description: User object that needs to be logged in
+      required: true
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
