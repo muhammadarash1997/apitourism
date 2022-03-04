@@ -17,32 +17,34 @@ import (
 func main() {
 	godotenv.Load(".env")
 
-	userDb := database.StartConnection() // buat objek database
+	var (
+		userDb = database.StartConnection() // buat objek database
 
-	userRepository := user.NewRepository(userDb)   // buat objek dari repository dengan mempassing objek dari db yg sudah dibuat
-	userService := user.NewService(userRepository) // buat objek dari service dengan mempassing objek dari repository yg sudah dibuat
-	authService := auth.NewService()
-	userHandler := user.NewUserHandler(userService, authService) // buat objek dari userHandler dengan mempassing objek dari service yg sudah dibuat
-
-	destinationRepository := destination.NewRepository(userDb)
-	destinationService := destination.NewService(destinationRepository)
-	destinationHandler := destination.NewDestinationHandler(destinationService)
-
-	bookmarkRepository := bookmark.NewRepository(userDb)
-	bookmarkService := bookmark.NewService(bookmarkRepository)
-	bookmarkHandler := bookmark.NewBookmarkHandler(bookmarkService)
-
-	viewRepository := view.NewRepository(userDb)
-	viewService := view.NewService(viewRepository)
-	viewHandler := view.NewViewHandler(viewService)
-
-	ratingRepository := rating.NewRepository(userDb)
-	ratingService := rating.NewService(ratingRepository)
-	ratingHandler := rating.NewRatingHandler(ratingService)
-
-	imageRepository := image.NewRepository(userDb)
-	imageService := image.NewService(imageRepository)
-	imageHandler := image.NewImageHandler(imageService)
+		userRepository = user.NewRepository(userDb)   // buat objek dari repository dengan mempassing objek dari db yg sudah dibuat
+		userService = user.NewService(userRepository) // buat objek dari service dengan mempassing objek dari repository yg sudah dibuat
+		authService = auth.NewService()
+		userHandler = user.NewUserHandler(userService, authService) // buat objek dari userHandler dengan mempassing objek dari service yg sudah dibuat
+	
+		destinationRepository = destination.NewRepository(userDb)
+		destinationService = destination.NewService(destinationRepository)
+		destinationHandler = destination.NewDestinationHandler(destinationService)
+	
+		bookmarkRepository = bookmark.NewRepository(userDb)
+		bookmarkService = bookmark.NewService(bookmarkRepository)
+		bookmarkHandler = bookmark.NewBookmarkHandler(bookmarkService)
+	
+		viewRepository = view.NewRepository(userDb)
+		viewService = view.NewService(viewRepository)
+		viewHandler = view.NewViewHandler(viewService)
+	
+		ratingRepository = rating.NewRepository(userDb)
+		ratingService = rating.NewService(ratingRepository)
+		ratingHandler = rating.NewRatingHandler(ratingService)
+	
+		imageRepository = image.NewRepository(userDb)
+		imageService = image.NewService(imageRepository)
+		imageHandler = image.NewImageHandler(imageService)
+	)
 
 	router := gin.Default()
 
@@ -52,7 +54,6 @@ func main() {
 	router.POST("/destination", userHandler.AuthenticateHandler, destinationHandler.AddDestinationHandler) // done
 	router.POST("/image/:destinationUUID", userHandler.AuthenticateHandler, imageHandler.AddImageHandlerByUUID)
 	router.DELETE("/user/:userUUID", userHandler.AuthenticateHandler, userHandler.DeleteUserByUUIDHandler)
-	// router.DELETE("/user/:userUUID", userHandler.DeleteUserByUUIDHandler)
 	router.DELETE("/destination/:destinationUUID", userHandler.AuthenticateHandler, destinationHandler.DeleteDestinationByUUIDHandler) // done
 	router.DELETE("/image/:imageUUID", userHandler.AuthenticateHandler, imageHandler.DeleteImageByUUIDHandler)
 
