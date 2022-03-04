@@ -6,8 +6,9 @@ info:
   contact:
     email: muhammadarash@gmail.com
 servers:
-  - url: http://localhost:8080
+  - url: https://apitourism.herokuapp.com/
 tags:
+  - name: test
   - name: destination
   - name: image
   - name: user
@@ -16,6 +17,22 @@ tags:
   - name: rating
   - name: search
 paths:
+  /test:
+    get:
+      tags:
+        - test
+      summary: Test API
+      responses:
+        '200':
+          description: Success testing API
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    format: byte
   /destination:
     post:
       tags:
