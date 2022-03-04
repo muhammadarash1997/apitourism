@@ -9,6 +9,7 @@ import (
 	"apitourism/rating"
 	"apitourism/user"
 	"apitourism/view"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -20,35 +21,38 @@ func main() {
 	var (
 		userDb = database.StartConnection() // buat objek database
 
-		userRepository = user.NewRepository(userDb)   // buat objek dari repository dengan mempassing objek dari db yg sudah dibuat
-		userService = user.NewService(userRepository) // buat objek dari service dengan mempassing objek dari repository yg sudah dibuat
-		authService = auth.NewService()
-		userHandler = user.NewUserHandler(userService, authService) // buat objek dari userHandler dengan mempassing objek dari service yg sudah dibuat
-	
+		userRepository = user.NewRepository(userDb)      // buat objek dari repository dengan mempassing objek dari db yg sudah dibuat
+		userService    = user.NewService(userRepository) // buat objek dari service dengan mempassing objek dari repository yg sudah dibuat
+		authService    = auth.NewService()
+		userHandler    = user.NewUserHandler(userService, authService) // buat objek dari userHandler dengan mempassing objek dari service yg sudah dibuat
+
 		destinationRepository = destination.NewRepository(userDb)
-		destinationService = destination.NewService(destinationRepository)
-		destinationHandler = destination.NewDestinationHandler(destinationService)
-	
+		destinationService    = destination.NewService(destinationRepository)
+		destinationHandler    = destination.NewDestinationHandler(destinationService)
+
 		bookmarkRepository = bookmark.NewRepository(userDb)
-		bookmarkService = bookmark.NewService(bookmarkRepository)
-		bookmarkHandler = bookmark.NewBookmarkHandler(bookmarkService)
-	
+		bookmarkService    = bookmark.NewService(bookmarkRepository)
+		bookmarkHandler    = bookmark.NewBookmarkHandler(bookmarkService)
+
 		viewRepository = view.NewRepository(userDb)
-		viewService = view.NewService(viewRepository)
-		viewHandler = view.NewViewHandler(viewService)
-	
+		viewService    = view.NewService(viewRepository)
+		viewHandler    = view.NewViewHandler(viewService)
+
 		ratingRepository = rating.NewRepository(userDb)
-		ratingService = rating.NewService(ratingRepository)
-		ratingHandler = rating.NewRatingHandler(ratingService)
-	
+		ratingService    = rating.NewService(ratingRepository)
+		ratingHandler    = rating.NewRatingHandler(ratingService)
+
 		imageRepository = image.NewRepository(userDb)
-		imageService = image.NewService(imageRepository)
-		imageHandler = image.NewImageHandler(imageService)
+		imageService    = image.NewService(imageRepository)
+		imageHandler    = image.NewImageHandler(imageService)
 	)
 
 	router := gin.Default()
 
 	router.Use(auth.CORSMiddleware())
+
+	// For API Test
+	router.GET("/test", func(c *gin.Context) { c.JSON(http.StatusOK, gin.H{"message": "ok"}) })
 
 	// For Admin
 	router.POST("/destination", userHandler.AuthenticateHandler, destinationHandler.AddDestinationHandler) // done
