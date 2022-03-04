@@ -71,7 +71,7 @@ func main() {
 	router.GET("/search/destinations/:userCoordinate", userHandler.AuthenticateHandler, destinationHandler.GetAllDestinationsByLimitPageHandler)
 	router.GET("/search/destinations/nearby/:userCoordinate", userHandler.AuthenticateHandler, destinationHandler.FindNearbyDestinationHandler)
 
-	router.Run(":8080")
+	router.Run()
 }
 
 // input
