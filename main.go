@@ -19,12 +19,12 @@ func main() {
 	godotenv.Load(".env")
 
 	var (
-		userDb = database.StartConnection() // buat objek database
+		userDb = database.StartConnection()
 
-		userRepository = user.NewRepository(userDb)      // buat objek dari repository dengan mempassing objek dari db yg sudah dibuat
-		userService    = user.NewService(userRepository) // buat objek dari service dengan mempassing objek dari repository yg sudah dibuat
+		userRepository = user.NewRepository(userDb)
+		userService    = user.NewService(userRepository)
 		authService    = auth.NewService()
-		userHandler    = user.NewUserHandler(userService, authService) // buat objek dari userHandler dengan mempassing objek dari service yg sudah dibuat
+		userHandler    = user.NewUserHandler(userService, authService)
 
 		destinationRepository = destination.NewRepository(userDb)
 		destinationService    = destination.NewService(destinationRepository)
@@ -55,21 +55,21 @@ func main() {
 	router.GET("/", func(c *gin.Context) { c.JSON(http.StatusOK, gin.H{"message": "ok"}) })
 
 	// For Admin
-	router.POST("/destination", userHandler.AuthenticateHandler, destinationHandler.AddDestinationHandler) // done
-	router.POST("/image/:destinationUUID", userHandler.AuthenticateHandler, imageHandler.AddImageHandlerByUUID)
-	router.DELETE("/user/:userUUID", userHandler.AuthenticateHandler, userHandler.DeleteUserByUUIDHandler)
-	router.DELETE("/destination/:destinationUUID", userHandler.AuthenticateHandler, destinationHandler.DeleteDestinationByUUIDHandler) // done
-	router.DELETE("/image/:imageUUID", userHandler.AuthenticateHandler, imageHandler.DeleteImageByUUIDHandler)
+	router.POST("/api/destination", userHandler.AuthenticateHandler, destinationHandler.AddDestinationHandler) // done
+	router.POST("/api/image/:destinationUUID", userHandler.AuthenticateHandler, imageHandler.AddImageHandlerByUUID)
+	router.DELETE("/api/user/:userUUID", userHandler.AuthenticateHandler, userHandler.DeleteUserByUUIDHandler)
+	router.DELETE("/api/destination/:destinationUUID", userHandler.AuthenticateHandler, destinationHandler.DeleteDestinationByUUIDHandler) // done
+	router.DELETE("/api/image/:imageUUID", userHandler.AuthenticateHandler, imageHandler.DeleteImageByUUIDHandler)
 
 	// For User
-	router.POST("/user/register", userHandler.RegisterUserHandler)
-	router.POST("/user/login", userHandler.LoginHandler)
-	router.POST("/bookmark", userHandler.AuthenticateHandler, bookmarkHandler.AddBookmarkHandler)
-	router.POST("/view", userHandler.AuthenticateHandler, viewHandler.AddViewHandler)
-	router.POST("/rating", userHandler.AuthenticateHandler, ratingHandler.AddRatingHandler)
-	router.DELETE("/bookmark/:bookmarkUUID", userHandler.AuthenticateHandler, bookmarkHandler.DeleteBookmarkByUUIDHandler)
-	router.GET("/search/destinations/:userCoordinate", userHandler.AuthenticateHandler, destinationHandler.GetAllDestinationsByLimitPageHandler)
-	router.GET("/search/destinations/nearby/:userCoordinate", userHandler.AuthenticateHandler, destinationHandler.FindNearbyDestinationHandler)
+	router.POST("/api/user/register", userHandler.RegisterUserHandler)
+	router.POST("/api/user/login", userHandler.LoginHandler)
+	router.POST("/api/bookmark", userHandler.AuthenticateHandler, bookmarkHandler.AddBookmarkHandler)
+	router.POST("/api/view", userHandler.AuthenticateHandler, viewHandler.AddViewHandler)
+	router.POST("/api/rating", userHandler.AuthenticateHandler, ratingHandler.AddRatingHandler)
+	router.DELETE("/api/bookmark/:bookmarkUUID", userHandler.AuthenticateHandler, bookmarkHandler.DeleteBookmarkByUUIDHandler)
+	router.GET("/api/destinations/:userCoordinate", userHandler.AuthenticateHandler, destinationHandler.GetAllDestinationsByLimitPageHandler)
+	router.GET("/api/destinations/nearby/:userCoordinate", userHandler.AuthenticateHandler, destinationHandler.FindNearbyDestinationHandler)
 
 	router.Run()
 }

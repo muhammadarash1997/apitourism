@@ -6,7 +6,7 @@ info:
   contact:
     email: muhammadarash@gmail.com
 servers:
-  - url: https://apitourism.herokuapp.com/
+  - url: https://apitourism.herokuapp.com
 tags:
   - name: test
   - name: destination
@@ -33,7 +33,7 @@ paths:
                   message:
                     type: string
                     format: byte
-  /destination:
+  /api/destination:
     post:
       tags:
         - destination
@@ -77,7 +77,7 @@ paths:
         - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/Destination'
-  /destination/{destinationUUID}:
+  /api/destination/{destinationUUID}:
     delete:
       tags:
         - destination
@@ -128,7 +128,7 @@ paths:
                     $ref: '#/components/schemas/Error'
       security:
         - bearerAuth: []
-  /image/{destinationUUID}:
+  /api/image/{destinationUUID}:
     post:
       tags:
         - image
@@ -197,7 +197,7 @@ paths:
             schema:
               type: string
               format: binary
-  /image/{imageUUID}:
+  /api/image/{imageUUID}:
     delete:
       tags:
         - image
@@ -248,7 +248,7 @@ paths:
                     $ref: '#/components/schemas/Error'
       security:
         - bearerAuth: []
-  /user/register:
+  /api/user/register:
     post:
       tags:
         - user
@@ -278,7 +278,7 @@ paths:
                     $ref: '#/components/schemas/Error'
       requestBody:
         $ref: '#/components/requestBodies/UserRegistered'
-  /user/login:
+  /api/user/login:
     post:
       tags:
         - user
@@ -319,7 +319,7 @@ paths:
                     $ref: '#/components/schemas/Error'
       requestBody:
         $ref: '#/components/requestBodies/UserLogged'
-  /user/{userUUID}:
+  /api/user/{userUUID}:
     delete:
       tags:
         - user
@@ -369,7 +369,7 @@ paths:
                     $ref: '#/components/schemas/Error'
       security:
         - bearerAuth: []
-  /bookmark:
+  /api/bookmark:
     post:
       tags:
         - bookmark
@@ -402,13 +402,12 @@ paths:
         - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/Bookmark'
-  /view:
+  /api/view:
     post:
       tags:
         - view
       summary: Add an view of destination
       description: This can only be done by the logged in user
-      operationId: placeOrder
       responses:
         '200':
           description: Success adding a bookmark
@@ -436,7 +435,7 @@ paths:
         - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/View'
-  /rating:
+  /api/rating:
     post:
       tags:
         - rating
@@ -469,7 +468,7 @@ paths:
         - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/Rating'
-  /search/destinations/{userCoordinate}:
+  /api/destinations/{userCoordinate}:
     get:
       tags:
         - search
@@ -478,7 +477,7 @@ paths:
       parameters:
         - name: userCoordinate
           in: path
-          description: User coordinate for knowing user location
+          description: User coordinate for knowing user location, ex = -8.5797192,116.0987078
           required: true
           schema:
             type: string
@@ -520,7 +519,7 @@ paths:
                     $ref: '#/components/schemas/Error'
       security:
         - bearerAuth: []
-  /search/destinations/nearby/{userCoordinate}:
+  /api/destinations/nearby/{userCoordinate}:
     get:
       tags:
         - search
@@ -529,7 +528,7 @@ paths:
       parameters:
         - name: userCoordinate
           in: path
-          description: User coordinate for knowing user location
+          description: User coordinate for knowing user location, ex = -8.5797192,116.0987078
           required: true
           schema:
             type: string
