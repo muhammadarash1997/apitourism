@@ -17,7 +17,7 @@ tags:
   - name: rating
   - name: search
 paths:
-  /test:
+  /:
     get:
       tags:
         - test

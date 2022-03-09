@@ -52,7 +52,7 @@ func main() {
 	router.Use(auth.CORSMiddleware())
 
 	// For API Test
-	router.GET("/test", func(c *gin.Context) { c.JSON(http.StatusOK, gin.H{"message": "ok"}) })
+	router.GET("/", func(c *gin.Context) { c.JSON(http.StatusOK, gin.H{"message": "ok"}) })
 
 	// For Admin
 	router.POST("/destination", userHandler.AuthenticateHandler, destinationHandler.AddDestinationHandler) // done
