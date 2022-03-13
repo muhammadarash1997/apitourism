@@ -61,7 +61,7 @@ func main() {
 	// 	// c.File("swagger.yaml")
 	// 	c.FileFromFS("swagger.yaml")
 	// })
-	router.Static("/swaggerui/", "cmd/api/swaggerui")
+	router.Static("/swaggerui/", "apitourism/swaggerui")
 
 	// For Admin
 	router.POST("/api/destination", userHandler.AuthenticateHandler, destinationHandler.AddDestinationHandler)
