@@ -9,7 +9,7 @@ import (
 	"apitourism/rating"
 	"apitourism/user"
 	"apitourism/view"
-	"net/http"
+	// "net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -53,7 +53,12 @@ func main() {
 	router.Use(auth.CORSMiddleware())
 
 	// For API Test
-	router.GET("/", func(c *gin.Context) { c.JSON(http.StatusOK, gin.H{"message": "ok"}) })
+	// router.GET("/", func(c *gin.Context) {
+	// 	c.JSON(http.StatusOK, gin.H{"message": "ok"})
+	// })
+	router.GET("/", func(c *gin.Context) {
+		c.File("swagger.yaml")
+	})
 
 	// For Admin
 	router.POST("/api/destination", userHandler.AuthenticateHandler, destinationHandler.AddDestinationHandler)
