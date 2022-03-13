@@ -11,9 +11,10 @@ import (
 	"apitourism/view"
 	// "net/http"
 
+	_ "apitourism/docs" // This line is necessary for go-swagger to find your docs!
+
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
-	_ "apitourism/docs" // This line is necessary for go-swagger to find your docs!
 )
 
 func main() {
@@ -56,9 +57,11 @@ func main() {
 	// router.GET("/", func(c *gin.Context) {
 	// 	c.JSON(http.StatusOK, gin.H{"message": "ok"})
 	// })
-	router.GET("/", func(c *gin.Context) {
-		c.File("swagger.yaml")
-	})
+	// router.GET("/", func(c *gin.Context) {
+	// 	// c.File("swagger.yaml")
+	// 	c.FileFromFS("swagger.yaml")
+	// })
+	router.Static("/swaggerui/", "cmd/api/swaggerui")
 
 	// For Admin
 	router.POST("/api/destination", userHandler.AuthenticateHandler, destinationHandler.AddDestinationHandler)

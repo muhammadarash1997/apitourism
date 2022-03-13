@@ -1,0 +1,1116 @@
+{
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "schemes": [
+    "http"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "description": "This is a API for tourism to search destinations",
+    "title": "Tourism API.",
+    "contact": {
+      "email": "muhammadarash1997@gmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "host": "https://apitourism.herokuapp.com",
+  "basePath": "/",
+  "paths": {
+    "/api/bookmark": {
+      "post": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Add a bookmark of destination. This can only be done by the logged in user",
+        "tags": [
+          "bookmark"
+        ],
+        "operationId": "addBookmark",
+        "parameters": [
+          {
+            "description": "Bookmark object that needs to be added",
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BookmarkInput"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/bookmarkAdded200"
+          },
+          "422": {
+            "$ref": "#/responses/errorResponse"
+          }
+        }
+      }
+    },
+    "/api/bookmark/{bookmarkUUID}": {
+      "delete": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Delete a bookmark of destination. This can only be done by the logged in user",
+        "tags": [
+          "bookmark"
+        ],
+        "operationId": "deleteBookmark",
+        "responses": {
+          "200": {
+            "$ref": "#/responses/bookmarkDeleted200"
+          },
+          "400": {
+            "$ref": "#/responses/errorResponse"
+          }
+        }
+      }
+    },
+    "/api/destination": {
+      "post": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Add a new destination to the store. This can only be done by the logged in admin",
+        "tags": [
+          "destination"
+        ],
+        "operationId": "addDestination",
+        "parameters": [
+          {
+            "description": "Destination object that needs to be added to the store",
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DestinationInput"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/destinationAdded200"
+          },
+          "401": {
+            "$ref": "#/responses/errorResponse"
+          },
+          "422": {
+            "$ref": "#/responses/errorResponse"
+          }
+        }
+      }
+    },
+    "/api/destination/{destinationUUID}": {
+      "delete": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Delete a destination from the store. This can only be done by the logged in admin",
+        "tags": [
+          "destination"
+        ],
+        "operationId": "deleteDestinationByUUID",
+        "parameters": [
+          {
+            "type": "string",
+            "x-go-name": "ID",
+            "description": "The destination uuid that needs to be deleted",
+            "name": "destinationUUID",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/destinationDeleted200"
+          },
+          "400": {
+            "$ref": "#/responses/errorResponse"
+          },
+          "401": {
+            "$ref": "#/responses/errorResponse"
+          }
+        }
+      }
+    },
+    "/api/destinations/nearby/{userCoordinate}": {
+      "get": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Get nearby destinations from the store. This can only be done by the logged in user",
+        "tags": [
+          "destination"
+        ],
+        "operationId": "getNearbyDestinations",
+        "parameters": [
+          {
+            "type": "string",
+            "x-go-name": "UserCoordinate",
+            "description": "User coordinate for knowing user location, ex = -8.5797192,116.0987078",
+            "name": "userCoordinate",
+            "in": "path",
+            "required": true
+          },
+          {
+            "enum": [
+              "all",
+              " beach",
+              " natural",
+              " towns",
+              " heritage"
+            ],
+            "type": "string",
+            "x-go-name": "Type",
+            "description": "The type of destinations as a parameter for finding",
+            "name": "type",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "boolean",
+            "x-go-name": "Rating",
+            "description": "Use rating as a parameter for finding",
+            "name": "rating",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "boolean",
+            "x-go-name": "Popularity",
+            "description": "Use popularity as a parameter for finding",
+            "name": "popularity",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/nearbyDestinationsGotten200"
+          },
+          "400": {
+            "$ref": "#/responses/errorResponse"
+          }
+        }
+      }
+    },
+    "/api/destinations/{userCoordinate}": {
+      "get": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Get all destinations from the store. This can only be done by the logged in user",
+        "tags": [
+          "destination"
+        ],
+        "operationId": "getAllDestinations",
+        "parameters": [
+          {
+            "type": "string",
+            "x-go-name": "UserCoordinate",
+            "description": "User coordinate for knowing user location, ex = -8.5797192,116.0987078",
+            "name": "userCoordinate",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "x-go-name": "Limit",
+            "description": "The numbers of items to return",
+            "name": "limit",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "x-go-name": "Page",
+            "description": "The page of items to return",
+            "name": "page",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/destinationsGotten200"
+          },
+          "400": {
+            "$ref": "#/responses/errorResponse"
+          }
+        }
+      }
+    },
+    "/api/image/{destinationUUID}": {
+      "post": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Add an image for a destination. This can only be done by the logged in admin",
+        "tags": [
+          "image"
+        ],
+        "operationId": "addImageByUUID",
+        "parameters": [
+          {
+            "type": "string",
+            "x-go-name": "ID",
+            "description": "Destination uuid to add image of destination",
+            "name": "destinationUUID",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "file",
+            "x-go-name": "ImageFile",
+            "description": "Image file of destination",
+            "name": "imageFile",
+            "in": "formData"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/imageAdded200"
+          },
+          "400": {
+            "$ref": "#/responses/errorResponse"
+          },
+          "401": {
+            "$ref": "#/responses/errorResponse"
+          }
+        }
+      }
+    },
+    "/api/image/{imageUUID}": {
+      "delete": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Delete image of destinations by uuid. This can only be done by the logged in admin",
+        "tags": [
+          "image"
+        ],
+        "operationId": "deleteImageByUUID",
+        "parameters": [
+          {
+            "type": "string",
+            "x-go-name": "ID",
+            "description": "The image uuid that needs to be deleted",
+            "name": "imageUUID",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/imageDeleted200"
+          },
+          "400": {
+            "$ref": "#/responses/errorResponse"
+          },
+          "401": {
+            "$ref": "#/responses/errorResponse"
+          }
+        }
+      }
+    },
+    "/api/rating": {
+      "post": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Add rating of destination. This can only be done by the logged in user",
+        "tags": [
+          "rating"
+        ],
+        "operationId": "addRating",
+        "parameters": [
+          {
+            "description": "Rating object that needs to be added",
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "destination_id": {
+                  "type": "string",
+                  "x-go-name": "DestinationID"
+                },
+                "rate": {
+                  "type": "integer",
+                  "format": "int64",
+                  "enum": [
+                    1,
+                    " 2",
+                    " 3",
+                    " 4",
+                    " 5"
+                  ],
+                  "x-go-name": "Rate"
+                },
+                "user_id": {
+                  "type": "string",
+                  "x-go-name": "UserID"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/ratingAdded200"
+          },
+          "422": {
+            "$ref": "#/responses/errorResponse"
+          }
+        }
+      }
+    },
+    "/api/user/login": {
+      "post": {
+        "description": "Logs user into the system",
+        "tags": [
+          "user"
+        ],
+        "operationId": "loginUser",
+        "parameters": [
+          {
+            "description": "User object that needs to be logged in",
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LoginInput"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/userLogged200"
+          },
+          "400": {
+            "$ref": "#/responses/errorResponse"
+          },
+          "422": {
+            "$ref": "#/responses/errorResponse"
+          }
+        }
+      }
+    },
+    "/api/user/register": {
+      "post": {
+        "description": "Create user",
+        "tags": [
+          "user"
+        ],
+        "operationId": "registerUser",
+        "parameters": [
+          {
+            "description": "User object that needs to be registered",
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "x-go-name": "Email"
+                },
+                "name": {
+                  "type": "string",
+                  "x-go-name": "Name"
+                },
+                "password": {
+                  "type": "string",
+                  "x-go-name": "Password"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/userRegistered200"
+          },
+          "422": {
+            "$ref": "#/responses/errorResponse"
+          }
+        }
+      }
+    },
+    "/api/user/{userUUID}": {
+      "delete": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Delete user. This can only be done by the logged in admin",
+        "tags": [
+          "user"
+        ],
+        "operationId": "deleteUserByUUID",
+        "parameters": [
+          {
+            "type": "string",
+            "x-go-name": "ID",
+            "description": "The user uuid that needs to be deleted",
+            "name": "userUUID",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/userDeleted200"
+          },
+          "400": {
+            "$ref": "#/responses/errorResponse"
+          },
+          "401": {
+            "$ref": "#/responses/errorResponse"
+          }
+        }
+      }
+    },
+    "/api/view": {
+      "post": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Add a view of destination. This can only be done by the logged in user",
+        "tags": [
+          "view"
+        ],
+        "operationId": "addView",
+        "parameters": [
+          {
+            "description": "View object that needs to be added",
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ViewInput"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/viewAdded200"
+          },
+          "422": {
+            "$ref": "#/responses/errorResponse"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "BookmarkFormatter": {
+      "type": "object",
+      "properties": {
+        "destination_id": {
+          "type": "string",
+          "x-go-name": "DestinationID"
+        },
+        "id": {
+          "type": "string",
+          "x-go-name": "ID"
+        },
+        "user_id": {
+          "type": "string",
+          "x-go-name": "UserID"
+        }
+      },
+      "x-go-package": "apitourism/bookmark"
+    },
+    "BookmarkInput": {
+      "type": "object",
+      "properties": {
+        "destination_id": {
+          "type": "string",
+          "x-go-name": "DestinationID"
+        },
+        "user_id": {
+          "type": "string",
+          "x-go-name": "UserID"
+        }
+      },
+      "x-go-package": "apitourism/bookmark"
+    },
+    "DestinationAddedFormatter": {
+      "type": "object",
+      "properties": {
+        "geo_hash": {
+          "type": "string",
+          "x-go-name": "GeoHash"
+        },
+        "id": {
+          "type": "string",
+          "x-go-name": "ID"
+        },
+        "name": {
+          "type": "string",
+          "x-go-name": "Name"
+        },
+        "type": {
+          "type": "string",
+          "x-go-name": "Type"
+        }
+      },
+      "x-go-package": "apitourism/destination"
+    },
+    "DestinationGottenFormatter": {
+      "type": "object",
+      "properties": {
+        "distance": {
+          "type": "string",
+          "x-go-name": "Distance"
+        },
+        "geo_hash": {
+          "type": "string",
+          "x-go-name": "GeoHash"
+        },
+        "id": {
+          "type": "string",
+          "x-go-name": "ID"
+        },
+        "name": {
+          "type": "string",
+          "x-go-name": "Name"
+        },
+        "type": {
+          "type": "string",
+          "x-go-name": "Type"
+        }
+      },
+      "x-go-package": "apitourism/destination"
+    },
+    "DestinationInput": {
+      "type": "object",
+      "properties": {
+        "geo_hash": {
+          "type": "string",
+          "x-go-name": "GeoHash"
+        },
+        "name": {
+          "type": "string",
+          "x-go-name": "Name"
+        },
+        "type": {
+          "type": "string",
+          "x-go-name": "Type"
+        }
+      },
+      "x-go-package": "apitourism/destination"
+    },
+    "ImageFormatter": {
+      "type": "object",
+      "properties": {
+        "destination_id": {
+          "type": "string",
+          "x-go-name": "DestinationID"
+        },
+        "file_name": {
+          "type": "string",
+          "x-go-name": "FileName"
+        },
+        "id": {
+          "type": "string",
+          "x-go-name": "ID"
+        }
+      },
+      "x-go-package": "apitourism/image"
+    },
+    "LoginInput": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "x-go-name": "Email"
+        },
+        "password": {
+          "type": "string",
+          "x-go-name": "Password"
+        }
+      },
+      "x-go-package": "apitourism/user"
+    },
+    "Meta": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "Code"
+        },
+        "message": {
+          "type": "string",
+          "x-go-name": "Message"
+        },
+        "status": {
+          "type": "string",
+          "x-go-name": "Status"
+        }
+      },
+      "x-go-package": "apitourism/helper"
+    },
+    "NearbyDestinationGottenFormatter": {
+      "type": "object",
+      "properties": {
+        "distance": {
+          "type": "string",
+          "x-go-name": "Distance"
+        },
+        "geo_hash": {
+          "type": "string",
+          "x-go-name": "GeoHash"
+        },
+        "id": {
+          "type": "string",
+          "x-go-name": "ID"
+        },
+        "name": {
+          "type": "string",
+          "x-go-name": "Name"
+        },
+        "rating": {
+          "type": "number",
+          "format": "double",
+          "x-go-name": "Rating"
+        },
+        "type": {
+          "type": "string",
+          "x-go-name": "Type"
+        },
+        "view_amount": {
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "ViewAmount"
+        }
+      },
+      "x-go-package": "apitourism/destination"
+    },
+    "RatingFormatter": {
+      "type": "object",
+      "properties": {
+        "destination_id": {
+          "type": "string",
+          "x-go-name": "DestinationID"
+        },
+        "id": {
+          "type": "string",
+          "x-go-name": "ID"
+        },
+        "rate": {
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "Rate"
+        },
+        "user_id": {
+          "type": "string",
+          "x-go-name": "UserID"
+        }
+      },
+      "x-go-package": "apitourism/rating"
+    },
+    "UserLoggedFormatter": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "x-go-name": "Email"
+        },
+        "id": {
+          "type": "string",
+          "x-go-name": "ID"
+        },
+        "name": {
+          "type": "string",
+          "x-go-name": "Name"
+        },
+        "role": {
+          "type": "string",
+          "x-go-name": "Role"
+        },
+        "token": {
+          "type": "string",
+          "x-go-name": "Token"
+        }
+      },
+      "x-go-package": "apitourism/user"
+    },
+    "UserRegisteredFormatter": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "x-go-name": "Email"
+        },
+        "id": {
+          "type": "string",
+          "x-go-name": "ID"
+        },
+        "name": {
+          "type": "string",
+          "x-go-name": "Name"
+        },
+        "role": {
+          "type": "string",
+          "x-go-name": "Role"
+        }
+      },
+      "x-go-package": "apitourism/user"
+    },
+    "ViewFormatter": {
+      "type": "object",
+      "properties": {
+        "destination_id": {
+          "type": "string",
+          "x-go-name": "DestinationID"
+        },
+        "id": {
+          "type": "string",
+          "x-go-name": "ID"
+        },
+        "user_id": {
+          "type": "string",
+          "x-go-name": "UserID"
+        }
+      },
+      "x-go-package": "apitourism/view"
+    },
+    "ViewInput": {
+      "type": "object",
+      "properties": {
+        "destination_id": {
+          "type": "string",
+          "x-go-name": "DestinationID"
+        }
+      },
+      "x-go-package": "apitourism/view"
+    }
+  },
+  "responses": {
+    "bookmarkAdded200": {
+      "description": "Success adding a bookmark",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/definitions/BookmarkFormatter"
+          },
+          "meta": {
+            "$ref": "#/definitions/Meta"
+          }
+        }
+      },
+      "headers": {
+        "Body": {
+          "description": "in: Body"
+        }
+      }
+    },
+    "bookmarkDeleted200": {
+      "description": "Success deleting bookmark",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "x-go-name": "Data"
+          },
+          "meta": {
+            "$ref": "#/definitions/Meta"
+          }
+        }
+      },
+      "headers": {
+        "Body": {
+          "description": "in: Body"
+        }
+      }
+    },
+    "destinationAdded200": {
+      "description": "Success adding new destination",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/definitions/DestinationAddedFormatter"
+          },
+          "meta": {
+            "$ref": "#/definitions/Meta"
+          }
+        }
+      },
+      "headers": {
+        "Body": {
+          "description": "in: Body"
+        }
+      }
+    },
+    "destinationDeleted200": {
+      "description": "Success deleting a destination",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "x-go-name": "Data"
+          },
+          "meta": {
+            "$ref": "#/definitions/Meta"
+          }
+        }
+      },
+      "headers": {
+        "Body": {
+          "description": "in: Body"
+        }
+      }
+    },
+    "destinationsGotten200": {
+      "description": "Success getting destinations",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/DestinationGottenFormatter"
+            },
+            "x-go-name": "Data"
+          },
+          "meta": {
+            "$ref": "#/definitions/Meta"
+          }
+        }
+      },
+      "headers": {
+        "Body": {
+          "description": "in: Body"
+        }
+      }
+    },
+    "errorResponse": {
+      "description": "",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "errors": {
+                "type": "string",
+                "x-go-name": "Errors"
+              }
+            },
+            "x-go-name": "Data"
+          },
+          "meta": {
+            "$ref": "#/definitions/Meta"
+          }
+        }
+      },
+      "headers": {
+        "Body": {
+          "description": "in: Body"
+        }
+      }
+    },
+    "imageAdded200": {
+      "description": "Success adding an image",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/definitions/ImageFormatter"
+          },
+          "meta": {
+            "$ref": "#/definitions/Meta"
+          }
+        }
+      },
+      "headers": {
+        "Body": {
+          "description": "in: Body"
+        }
+      }
+    },
+    "imageDeleted200": {
+      "description": "Success deleting an image",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "x-go-name": "Data"
+          },
+          "meta": {
+            "$ref": "#/definitions/Meta"
+          }
+        }
+      },
+      "headers": {
+        "Body": {
+          "description": "in: Body"
+        }
+      }
+    },
+    "nearbyDestinationsGotten200": {
+      "description": "Success getting nearby destinations",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/NearbyDestinationGottenFormatter"
+            },
+            "x-go-name": "Data"
+          },
+          "meta": {
+            "$ref": "#/definitions/Meta"
+          }
+        }
+      },
+      "headers": {
+        "Body": {
+          "description": "in: Body"
+        }
+      }
+    },
+    "ratingAdded200": {
+      "description": "Success adding rating",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/definitions/RatingFormatter"
+          },
+          "meta": {
+            "$ref": "#/definitions/Meta"
+          }
+        }
+      },
+      "headers": {
+        "Body": {
+          "description": "in: Body"
+        }
+      }
+    },
+    "userDeleted200": {
+      "description": "Success deleting a user",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "x-go-name": "Data"
+          },
+          "meta": {
+            "$ref": "#/definitions/Meta"
+          }
+        }
+      },
+      "headers": {
+        "Body": {
+          "description": "in: Body"
+        }
+      }
+    },
+    "userLogged200": {
+      "description": "Success logging in an account",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/definitions/UserLoggedFormatter"
+          },
+          "meta": {
+            "$ref": "#/definitions/Meta"
+          }
+        }
+      },
+      "headers": {
+        "Body": {
+          "description": "in: Body"
+        }
+      }
+    },
+    "userRegistered200": {
+      "description": "Success registering an account",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/definitions/UserRegisteredFormatter"
+          },
+          "meta": {
+            "$ref": "#/definitions/Meta"
+          }
+        }
+      },
+      "headers": {
+        "Body": {
+          "description": "in: Body"
+        }
+      }
+    },
+    "viewAdded200": {
+      "description": "Success adding a view",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/definitions/ViewFormatter"
+          },
+          "meta": {
+            "$ref": "#/definitions/Meta"
+          }
+        }
+      },
+      "headers": {
+        "Body": {
+          "description": "in: Body"
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  }
+}
