@@ -15,6 +15,15 @@ func NewBookmarkHandler(bookmarkService Service) *bookmarkHandler {
 	return &bookmarkHandler{bookmarkService}
 }
 
+// swagger:route POST /api/bookmark bookmark addBookmark
+// Add a bookmark of destination. This can only be done by the logged in user
+//
+// Security:
+// - Bearer:
+// responses:
+//		200: bookmarkAdded200
+//		422: errorResponse
+
 func (this *bookmarkHandler) AddBookmarkHandler(c *gin.Context) {
 	// 1. Read payload
 	// 2. Call process function
@@ -47,6 +56,15 @@ func (this *bookmarkHandler) AddBookmarkHandler(c *gin.Context) {
 
 	c.JSON(http.StatusOK, response)
 }
+
+// swagger:route DELETE /api/bookmark/{bookmarkUUID} bookmark deleteBookmark
+// Delete a bookmark of destination. This can only be done by the logged in user
+//
+// Security:
+// - Bearer:
+// responses:
+//		200: bookmarkDeleted200
+//		400: errorResponse
 
 func (this *bookmarkHandler) DeleteBookmarkByUUIDHandler(c *gin.Context) {
 	// Read payload

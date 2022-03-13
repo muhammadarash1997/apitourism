@@ -13,6 +13,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	_ "apitourism/docs" // This line is necessary for go-swagger to find your docs!
 )
 
 func main() {
@@ -55,10 +56,10 @@ func main() {
 	router.GET("/", func(c *gin.Context) { c.JSON(http.StatusOK, gin.H{"message": "ok"}) })
 
 	// For Admin
-	router.POST("/api/destination", userHandler.AuthenticateHandler, destinationHandler.AddDestinationHandler) // done
+	router.POST("/api/destination", userHandler.AuthenticateHandler, destinationHandler.AddDestinationHandler)
 	router.POST("/api/image/:destinationUUID", userHandler.AuthenticateHandler, imageHandler.AddImageHandlerByUUID)
 	router.DELETE("/api/user/:userUUID", userHandler.AuthenticateHandler, userHandler.DeleteUserByUUIDHandler)
-	router.DELETE("/api/destination/:destinationUUID", userHandler.AuthenticateHandler, destinationHandler.DeleteDestinationByUUIDHandler) // done
+	router.DELETE("/api/destination/:destinationUUID", userHandler.AuthenticateHandler, destinationHandler.DeleteDestinationByUUIDHandler)
 	router.DELETE("/api/image/:imageUUID", userHandler.AuthenticateHandler, imageHandler.DeleteImageByUUIDHandler)
 
 	// For User

@@ -5,14 +5,14 @@ import (
 	"fmt"
 )
 
-type destinationAddedFormatter struct {
+type DestinationAddedFormatter struct {
 	ID      string `json:"id"`
 	Name    string `json:"name"`
 	Type    string `json:"type"`
 	GeoHash string `json:"geo_hash"`
 }
 
-type destinationGottenFormatter struct {
+type DestinationGottenFormatter struct {
 	ID       string `json:"id"`
 	Name     string `json:"name"`
 	Type     string `json:"type"`
@@ -20,7 +20,7 @@ type destinationGottenFormatter struct {
 	Distance string `json:"distance"`
 }
 
-type nearbyDestinationGottenFormatter struct {
+type NearbyDestinationGottenFormatter struct {
 	ID         string  `json:"id"`
 	Name       string  `json:"name"`
 	Type       string  `json:"type"`
@@ -30,8 +30,8 @@ type nearbyDestinationGottenFormatter struct {
 	Distance   string  `json:"distance"`
 }
 
-func FormatDestinationAdded(destination Destination) destinationAddedFormatter {
-	destinationFormatted := destinationAddedFormatter{
+func FormatDestinationAdded(destination Destination) DestinationAddedFormatter {
+	destinationFormatted := DestinationAddedFormatter{
 		ID:      destination.ID,
 		Name:    destination.Name,
 		Type:    destination.Type,
@@ -41,15 +41,15 @@ func FormatDestinationAdded(destination Destination) destinationAddedFormatter {
 	return destinationFormatted
 }
 
-func FormatDestinationsGotten(userCoordinate string, allDestinationsGotten []Destination) []destinationGottenFormatter {
+func FormatDestinationsGotten(userCoordinate string, allDestinationsGotten []Destination) []DestinationGottenFormatter {
 	// Parse user coordinate
 	userLatitude, userLongitude := helper.CoordinateParser(userCoordinate)
 
-	allDestinationsFormatted := []destinationGottenFormatter{}
+	allDestinationsFormatted := []DestinationGottenFormatter{}
 
 	for _, destinationGotten := range allDestinationsGotten {
 		// Create destinationFormatted
-		destinationFormatted := destinationGottenFormatter{}
+		destinationFormatted := DestinationGottenFormatter{}
 
 		// Decode Geohash dari setiap objek dari destinations
 		destinationLatitude, destinationLongitude := helper.DecodeGeohash(destinationGotten.GeoHash)
@@ -72,15 +72,15 @@ func FormatDestinationsGotten(userCoordinate string, allDestinationsGotten []Des
 	return allDestinationsFormatted
 }
 
-func FormatNearbyDestinationsGotten(userCoordinate string, allNearbyDestinationsGotten []NearbyDestination) []nearbyDestinationGottenFormatter {
+func FormatNearbyDestinationsGotten(userCoordinate string, allNearbyDestinationsGotten []NearbyDestination) []NearbyDestinationGottenFormatter {
 	// Parse user coordinate
 	userLatitude, userLongitude := helper.CoordinateParser(userCoordinate)
 
-	allNearbyDestinationsFormatted := []nearbyDestinationGottenFormatter{}
+	allNearbyDestinationsFormatted := []NearbyDestinationGottenFormatter{}
 
 	for _, nearbyDestinationGotten := range allNearbyDestinationsGotten {
 		// Create destinationFormatted
-		nearbyDestinationFormatted := nearbyDestinationGottenFormatter{}
+		nearbyDestinationFormatted := NearbyDestinationGottenFormatter{}
 
 		// Decode Geohash dari setiap objek dari destinations
 		destinationLatitude, destinationLongitude := helper.DecodeGeohash(nearbyDestinationGotten.GeoHash)

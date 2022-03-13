@@ -15,6 +15,15 @@ func NewRatingHandler(ratingService Service) *ratingHandler {
 	return &ratingHandler{ratingService}
 }
 
+// swagger:route POST /api/rating rating addRating
+// Add rating of destination. This can only be done by the logged in user
+//
+// Security:
+// - Bearer:
+// responses:
+//		200: ratingAdded200
+//		422: errorResponse
+
 func (this * ratingHandler) AddRatingHandler(c *gin.Context) {
 	// Read payload
 	// Call process

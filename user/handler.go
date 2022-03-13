@@ -19,6 +19,13 @@ func NewUserHandler(userService Service, authService auth.Service) *userHandler 
 	return &userHandler{userService, authService}
 }
 
+// swagger:route POST /api/user/register user registerUser
+// Create user
+//
+// responses:
+//		200: userRegistered200
+//		422: errorResponse
+
 func (this *userHandler) RegisterUserHandler(c *gin.Context) {
 	// 1. tangkap input dari user
 	// 2. map input dari user ke struct RegisterUserInput
@@ -58,6 +65,16 @@ func (this *userHandler) RegisterUserHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+// swagger:route DELETE /api/user/{userUUID} user deleteUserByUUID
+// Delete user. This can only be done by the logged in admin
+//
+// Security:
+// - Bearer:
+// responses:
+//		200: userDeleted200
+//		400: errorResponse
+//		401: errorResponse
+
 func (this *userHandler) DeleteUserByUUIDHandler(c *gin.Context) {
 	uuid := c.Params.ByName("userUUID")
 
@@ -82,6 +99,14 @@ func (this *userHandler) DeleteUserByUUIDHandler(c *gin.Context) {
 	response := helper.APIResponse("Deletion successfully", http.StatusOK, "success", nil)
 	c.JSON(http.StatusOK, response)
 }
+
+// swagger:route POST /api/user/login user loginUser
+// Logs user into the system
+//
+// responses:
+//		200: userLogged200
+//		400: errorResponse
+//		422: errorResponse
 
 func (this *userHandler) LoginHandler(c *gin.Context) {
 	var loginInput LoginInput

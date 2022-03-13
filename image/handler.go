@@ -17,6 +17,16 @@ func NewImageHandler(imageService Service) *imageHandler {
 	return &imageHandler{imageService}
 }
 
+// swagger:route POST /api/image/{destinationUUID} image addImageByUUID
+// Add an image for a destination. This can only be done by the logged in admin
+//
+// Security:
+// - Bearer:
+// responses:
+//		200: imageAdded200
+//		400: errorResponse
+//		401: errorResponse
+
 func (this *imageHandler) AddImageHandlerByUUID(c *gin.Context) {
 	// Read payload
 	// Authorization admin
@@ -75,6 +85,16 @@ func (this *imageHandler) AddImageHandlerByUUID(c *gin.Context) {
 	response := helper.APIResponse("Image has been added", http.StatusOK, "success", imageFormatted)
 	c.JSON(http.StatusOK, response)
 }
+
+// swagger:route DELETE /api/image/{imageUUID} image deleteImageByUUID
+// Delete image of destinations by uuid. This can only be done by the logged in admin
+//
+// Security:
+// - Bearer:
+// responses:
+//		200: imageDeleted200
+//		400: errorResponse
+//		401: errorResponse
 
 func (this *imageHandler) DeleteImageByUUIDHandler(c *gin.Context) {
 	// Read payload

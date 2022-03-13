@@ -17,6 +17,16 @@ func NewDestinationHandler(destinationService Service) *destinationHandler {
 	return &destinationHandler{destinationService}
 }
 
+// swagger:route POST /api/destination destination addDestination
+// Add a new destination to the store. This can only be done by the logged in admin
+//
+// Security:
+// - Bearer:
+// responses:
+//		200: destinationAdded200
+//		401: errorResponse
+//		422: errorResponse
+
 func (this *destinationHandler) AddDestinationHandler(c *gin.Context) {
 	// 1. Read payload
 	// 2. Authorization admin
@@ -59,6 +69,16 @@ func (this *destinationHandler) AddDestinationHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+// swagger:route DELETE /api/destination/{destinationUUID} destination deleteDestinationByUUID
+// Delete a destination from the store. This can only be done by the logged in admin
+//
+// Security:
+// - Bearer:
+// responses:
+//		200: destinationDeleted200
+//		400: errorResponse
+//		401: errorResponse
+
 func (this *destinationHandler) DeleteDestinationByUUIDHandler(c *gin.Context) {
 	// Read payload
 	// Authorization admin
@@ -89,6 +109,15 @@ func (this *destinationHandler) DeleteDestinationByUUIDHandler(c *gin.Context) {
 
 	c.JSON(http.StatusOK, response)
 }
+
+// swagger:route GET /api/destinations/{userCoordinate} destination getAllDestinations
+// Get all destinations from the store. This can only be done by the logged in user
+//
+// Security:
+// - Bearer:
+// responses:
+//		200: destinationsGotten200
+//		400: errorResponse
 
 func (this *destinationHandler) GetAllDestinationsByLimitPageHandler(c *gin.Context) {
 	// Get path params
@@ -134,6 +163,15 @@ func (this *destinationHandler) GetAllDestinationsByLimitPageHandler(c *gin.Cont
 
 	c.JSON(http.StatusOK, response)
 }
+
+// swagger:route GET /api/destinations/nearby/{userCoordinate} destination getNearbyDestinations
+// Get nearby destinations from the store. This can only be done by the logged in user
+//
+// Security:
+// - Bearer:
+// responses:
+//		200: nearbyDestinationsGotten200
+//		400: errorResponse
 
 func (this *destinationHandler) FindNearbyDestinationHandler(c *gin.Context) {
 	// Read path param & query param

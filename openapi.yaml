@@ -334,7 +334,7 @@ paths:
             type: string
       responses:
         '200':
-          description: Success logging in account
+          description: Success deleting a user
           content:
             application/json:
               schema:
@@ -373,7 +373,7 @@ paths:
     post:
       tags:
         - bookmark
-      summary: Add an bookmark of destination
+      summary: Add a bookmark of destination
       description: This can only be done by the logged in user
       responses:
         '200':
@@ -406,7 +406,7 @@ paths:
     post:
       tags:
         - view
-      summary: Add an view of destination
+      summary: Add a view of destination
       description: This can only be done by the logged in user
       responses:
         '200':
@@ -439,7 +439,7 @@ paths:
     post:
       tags:
         - rating
-      summary: Add an rating of destination
+      summary: Add a rating of destination
       description: This can only be done by the logged in user
       responses:
         '200':
@@ -468,12 +468,51 @@ paths:
         - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/Rating'
+  /api/bookmark/{bookmarkUUID}:
+    delete:
+      tags:
+        - bookmark
+      summary: Delete bookmark
+      description: This can only be done by the logged in user
+      parameters:
+        - name: bookmarkUUID
+          in: path
+          description: The bookmark uuid that needs to be deleted
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success deleting a bookmark
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    nullable: true
+        '400':
+          description: Failed for deleting a bookmark
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    $ref: '#/components/schemas/Error'
+      security:
+        - bearerAuth: []
   /api/destinations/{userCoordinate}:
     get:
       tags:
         - search
-      summary: Add a new destination to the store
-      description: This can only be done by the logged in admin
+      summary: Get destinations
+      description: This can only be done by the logged in user
       parameters:
         - name: userCoordinate
           in: path
@@ -523,8 +562,8 @@ paths:
     get:
       tags:
         - search
-      summary: Add a new destination to the store
-      description: This can only be done by the logged in admin
+      summary: Get nearby destinations
+      description: This can only be done by the logged in user
       parameters:
         - name: userCoordinate
           in: path
@@ -557,7 +596,7 @@ paths:
           required: true
           schema:
             type: boolean
-      responses:
+      responses:  
         '200':
           description: Success getting nearby destinations
           content:

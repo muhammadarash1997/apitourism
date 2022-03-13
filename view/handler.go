@@ -15,6 +15,15 @@ func NewViewHandler(service Service) *viewHandler {
 	return &viewHandler{service}
 }
 
+// swagger:route POST /api/view view addView
+// Add a view of destination. This can only be done by the logged in user
+//
+// Security:
+// - Bearer:
+// responses:
+//		200: viewAdded200
+//		422: errorResponse
+
 func (this *viewHandler) AddViewHandler(c *gin.Context) {
 	// Read payload
 	// Call process

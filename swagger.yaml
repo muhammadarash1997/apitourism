@@ -1,0 +1,754 @@
+basePath: /
+consumes:
+- application/json
+definitions:
+  BookmarkFormatter:
+    properties:
+      destination_id:
+        type: string
+        x-go-name: DestinationID
+      id:
+        type: string
+        x-go-name: ID
+      user_id:
+        type: string
+        x-go-name: UserID
+    type: object
+    x-go-package: apitourism/bookmark
+  BookmarkInput:
+    properties:
+      destination_id:
+        type: string
+        x-go-name: DestinationID
+      user_id:
+        type: string
+        x-go-name: UserID
+    type: object
+    x-go-package: apitourism/bookmark
+  DestinationAddedFormatter:
+    properties:
+      geo_hash:
+        type: string
+        x-go-name: GeoHash
+      id:
+        type: string
+        x-go-name: ID
+      name:
+        type: string
+        x-go-name: Name
+      type:
+        type: string
+        x-go-name: Type
+    type: object
+    x-go-package: apitourism/destination
+  DestinationGottenFormatter:
+    properties:
+      distance:
+        type: string
+        x-go-name: Distance
+      geo_hash:
+        type: string
+        x-go-name: GeoHash
+      id:
+        type: string
+        x-go-name: ID
+      name:
+        type: string
+        x-go-name: Name
+      type:
+        type: string
+        x-go-name: Type
+    type: object
+    x-go-package: apitourism/destination
+  DestinationInput:
+    properties:
+      geo_hash:
+        type: string
+        x-go-name: GeoHash
+      name:
+        type: string
+        x-go-name: Name
+      type:
+        type: string
+        x-go-name: Type
+    type: object
+    x-go-package: apitourism/destination
+  ImageFormatter:
+    properties:
+      destination_id:
+        type: string
+        x-go-name: DestinationID
+      file_name:
+        type: string
+        x-go-name: FileName
+      id:
+        type: string
+        x-go-name: ID
+    type: object
+    x-go-package: apitourism/image
+  LoginInput:
+    properties:
+      email:
+        type: string
+        x-go-name: Email
+      password:
+        type: string
+        x-go-name: Password
+    type: object
+    x-go-package: apitourism/user
+  Meta:
+    properties:
+      code:
+        format: int64
+        type: integer
+        x-go-name: Code
+      message:
+        type: string
+        x-go-name: Message
+      status:
+        type: string
+        x-go-name: Status
+    type: object
+    x-go-package: apitourism/helper
+  NearbyDestinationGottenFormatter:
+    properties:
+      distance:
+        type: string
+        x-go-name: Distance
+      geo_hash:
+        type: string
+        x-go-name: GeoHash
+      id:
+        type: string
+        x-go-name: ID
+      name:
+        type: string
+        x-go-name: Name
+      rating:
+        format: double
+        type: number
+        x-go-name: Rating
+      type:
+        type: string
+        x-go-name: Type
+      view_amount:
+        format: int64
+        type: integer
+        x-go-name: ViewAmount
+    type: object
+    x-go-package: apitourism/destination
+  RatingFormatter:
+    properties:
+      destination_id:
+        type: string
+        x-go-name: DestinationID
+      id:
+        type: string
+        x-go-name: ID
+      rate:
+        format: int64
+        type: integer
+        x-go-name: Rate
+      user_id:
+        type: string
+        x-go-name: UserID
+    type: object
+    x-go-package: apitourism/rating
+  UserLoggedFormatter:
+    properties:
+      email:
+        type: string
+        x-go-name: Email
+      id:
+        type: string
+        x-go-name: ID
+      name:
+        type: string
+        x-go-name: Name
+      role:
+        type: string
+        x-go-name: Role
+      token:
+        type: string
+        x-go-name: Token
+    type: object
+    x-go-package: apitourism/user
+  UserRegisteredFormatter:
+    properties:
+      email:
+        type: string
+        x-go-name: Email
+      id:
+        type: string
+        x-go-name: ID
+      name:
+        type: string
+        x-go-name: Name
+      role:
+        type: string
+        x-go-name: Role
+    type: object
+    x-go-package: apitourism/user
+  ViewFormatter:
+    properties:
+      destination_id:
+        type: string
+        x-go-name: DestinationID
+      id:
+        type: string
+        x-go-name: ID
+      user_id:
+        type: string
+        x-go-name: UserID
+    type: object
+    x-go-package: apitourism/view
+  ViewInput:
+    properties:
+      destination_id:
+        type: string
+        x-go-name: DestinationID
+    type: object
+    x-go-package: apitourism/view
+host: https://apitourism.herokuapp.com
+info:
+  contact:
+    email: muhammadarash1997@gmail.com
+  description: This is a API for tourism to search destinations
+  title: Tourism API.
+  version: 1.0.0
+paths:
+  /api/bookmark:
+    post:
+      description: Add a bookmark of destination. This can only be done by the logged
+        in user
+      operationId: addBookmark
+      parameters:
+      - description: Bookmark object that needs to be added
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/BookmarkInput'
+      responses:
+        "200":
+          $ref: '#/responses/bookmarkAdded200'
+        "422":
+          $ref: '#/responses/errorResponse'
+      security:
+      - Bearer: []
+      tags:
+      - bookmark
+  /api/bookmark/{bookmarkUUID}:
+    delete:
+      description: Delete a bookmark of destination. This can only be done by the
+        logged in user
+      operationId: deleteBookmark
+      responses:
+        "200":
+          $ref: '#/responses/bookmarkDeleted200'
+        "400":
+          $ref: '#/responses/errorResponse'
+      security:
+      - Bearer: []
+      tags:
+      - bookmark
+  /api/destination:
+    post:
+      description: Add a new destination to the store. This can only be done by the
+        logged in admin
+      operationId: addDestination
+      parameters:
+      - description: Destination object that needs to be added to the store
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/DestinationInput'
+      responses:
+        "200":
+          $ref: '#/responses/destinationAdded200'
+        "401":
+          $ref: '#/responses/errorResponse'
+        "422":
+          $ref: '#/responses/errorResponse'
+      security:
+      - Bearer: []
+      tags:
+      - destination
+  /api/destination/{destinationUUID}:
+    delete:
+      description: Delete a destination from the store. This can only be done by the
+        logged in admin
+      operationId: deleteDestinationByUUID
+      parameters:
+      - description: The destination uuid that needs to be deleted
+        in: path
+        name: destinationUUID
+        required: true
+        type: string
+        x-go-name: ID
+      responses:
+        "200":
+          $ref: '#/responses/destinationDeleted200'
+        "400":
+          $ref: '#/responses/errorResponse'
+        "401":
+          $ref: '#/responses/errorResponse'
+      security:
+      - Bearer: []
+      tags:
+      - destination
+  /api/destinations/{userCoordinate}:
+    get:
+      description: Get all destinations from the store. This can only be done by the
+        logged in user
+      operationId: getAllDestinations
+      parameters:
+      - description: User coordinate for knowing user location, ex = -8.5797192,116.0987078
+        in: path
+        name: userCoordinate
+        required: true
+        type: string
+        x-go-name: UserCoordinate
+      - description: The numbers of items to return
+        format: int64
+        in: query
+        name: limit
+        required: true
+        type: integer
+        x-go-name: Limit
+      - description: The page of items to return
+        format: int64
+        in: query
+        name: page
+        required: true
+        type: integer
+        x-go-name: Page
+      responses:
+        "200":
+          $ref: '#/responses/destinationsGotten200'
+        "400":
+          $ref: '#/responses/errorResponse'
+      security:
+      - Bearer: []
+      tags:
+      - destination
+  /api/destinations/nearby/{userCoordinate}:
+    get:
+      description: Get nearby destinations from the store. This can only be done by
+        the logged in user
+      operationId: getNearbyDestinations
+      parameters:
+      - description: User coordinate for knowing user location, ex = -8.5797192,116.0987078
+        in: path
+        name: userCoordinate
+        required: true
+        type: string
+        x-go-name: UserCoordinate
+      - description: The type of destinations as a parameter for finding
+        enum:
+        - all
+        - ' beach'
+        - ' natural'
+        - ' towns'
+        - ' heritage'
+        in: query
+        name: type
+        required: true
+        type: string
+        x-go-name: Type
+      - description: Use rating as a parameter for finding
+        in: query
+        name: rating
+        required: true
+        type: boolean
+        x-go-name: Rating
+      - description: Use popularity as a parameter for finding
+        in: query
+        name: popularity
+        required: true
+        type: boolean
+        x-go-name: Popularity
+      responses:
+        "200":
+          $ref: '#/responses/nearbyDestinationsGotten200'
+        "400":
+          $ref: '#/responses/errorResponse'
+      security:
+      - Bearer: []
+      tags:
+      - destination
+  /api/image/{destinationUUID}:
+    post:
+      description: Add an image for a destination. This can only be done by the logged
+        in admin
+      operationId: addImageByUUID
+      parameters:
+      - description: Destination uuid to add image of destination
+        in: path
+        name: destinationUUID
+        required: true
+        type: string
+        x-go-name: ID
+      - description: Image file of destination
+        in: formData
+        name: imageFile
+        type: file
+        x-go-name: ImageFile
+      responses:
+        "200":
+          $ref: '#/responses/imageAdded200'
+        "400":
+          $ref: '#/responses/errorResponse'
+        "401":
+          $ref: '#/responses/errorResponse'
+      security:
+      - Bearer: []
+      tags:
+      - image
+  /api/image/{imageUUID}:
+    delete:
+      description: Delete image of destinations by uuid. This can only be done by
+        the logged in admin
+      operationId: deleteImageByUUID
+      parameters:
+      - description: The image uuid that needs to be deleted
+        in: path
+        name: imageUUID
+        required: true
+        type: string
+        x-go-name: ID
+      responses:
+        "200":
+          $ref: '#/responses/imageDeleted200'
+        "400":
+          $ref: '#/responses/errorResponse'
+        "401":
+          $ref: '#/responses/errorResponse'
+      security:
+      - Bearer: []
+      tags:
+      - image
+  /api/rating:
+    post:
+      description: Add rating of destination. This can only be done by the logged
+        in user
+      operationId: addRating
+      parameters:
+      - description: Rating object that needs to be added
+        in: body
+        name: Body
+        required: true
+        schema:
+          properties:
+            destination_id:
+              type: string
+              x-go-name: DestinationID
+            rate:
+              enum:
+              - 1
+              - ' 2'
+              - ' 3'
+              - ' 4'
+              - ' 5'
+              format: int64
+              type: integer
+              x-go-name: Rate
+            user_id:
+              type: string
+              x-go-name: UserID
+          type: object
+      responses:
+        "200":
+          $ref: '#/responses/ratingAdded200'
+        "422":
+          $ref: '#/responses/errorResponse'
+      security:
+      - Bearer: []
+      tags:
+      - rating
+  /api/user/{userUUID}:
+    delete:
+      description: Delete user. This can only be done by the logged in admin
+      operationId: deleteUserByUUID
+      parameters:
+      - description: The user uuid that needs to be deleted
+        in: path
+        name: userUUID
+        required: true
+        type: string
+        x-go-name: ID
+      responses:
+        "200":
+          $ref: '#/responses/userDeleted200'
+        "400":
+          $ref: '#/responses/errorResponse'
+        "401":
+          $ref: '#/responses/errorResponse'
+      security:
+      - Bearer: []
+      tags:
+      - user
+  /api/user/login:
+    post:
+      description: Logs user into the system
+      operationId: loginUser
+      parameters:
+      - description: User object that needs to be logged in
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/LoginInput'
+      responses:
+        "200":
+          $ref: '#/responses/userLogged200'
+        "400":
+          $ref: '#/responses/errorResponse'
+        "422":
+          $ref: '#/responses/errorResponse'
+      tags:
+      - user
+  /api/user/register:
+    post:
+      description: Create user
+      operationId: registerUser
+      parameters:
+      - description: User object that needs to be registered
+        in: body
+        name: Body
+        required: true
+        schema:
+          properties:
+            email:
+              type: string
+              x-go-name: Email
+            name:
+              type: string
+              x-go-name: Name
+            password:
+              type: string
+              x-go-name: Password
+          type: object
+      responses:
+        "200":
+          $ref: '#/responses/userRegistered200'
+        "422":
+          $ref: '#/responses/errorResponse'
+      tags:
+      - user
+  /api/view:
+    post:
+      description: Add a view of destination. This can only be done by the logged
+        in user
+      operationId: addView
+      parameters:
+      - description: View object that needs to be added
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/ViewInput'
+      responses:
+        "200":
+          $ref: '#/responses/viewAdded200'
+        "422":
+          $ref: '#/responses/errorResponse'
+      security:
+      - Bearer: []
+      tags:
+      - view
+produces:
+- application/json
+responses:
+  bookmarkAdded200:
+    description: Success adding a bookmark
+    headers:
+      Body:
+        description: 'in: Body'
+    schema:
+      properties:
+        data:
+          $ref: '#/definitions/BookmarkFormatter'
+        meta:
+          $ref: '#/definitions/Meta'
+      type: object
+  bookmarkDeleted200:
+    description: Success deleting bookmark
+    headers:
+      Body:
+        description: 'in: Body'
+    schema:
+      properties:
+        data:
+          type: object
+          x-go-name: Data
+        meta:
+          $ref: '#/definitions/Meta'
+      type: object
+  destinationAdded200:
+    description: Success adding new destination
+    headers:
+      Body:
+        description: 'in: Body'
+    schema:
+      properties:
+        data:
+          $ref: '#/definitions/DestinationAddedFormatter'
+        meta:
+          $ref: '#/definitions/Meta'
+      type: object
+  destinationDeleted200:
+    description: Success deleting a destination
+    headers:
+      Body:
+        description: 'in: Body'
+    schema:
+      properties:
+        data:
+          type: object
+          x-go-name: Data
+        meta:
+          $ref: '#/definitions/Meta'
+      type: object
+  destinationsGotten200:
+    description: Success getting destinations
+    headers:
+      Body:
+        description: 'in: Body'
+    schema:
+      properties:
+        data:
+          items:
+            $ref: '#/definitions/DestinationGottenFormatter'
+          type: array
+          x-go-name: Data
+        meta:
+          $ref: '#/definitions/Meta'
+      type: object
+  errorResponse:
+    description: ""
+    headers:
+      Body:
+        description: 'in: Body'
+    schema:
+      properties:
+        data:
+          properties:
+            errors:
+              type: string
+              x-go-name: Errors
+          type: object
+          x-go-name: Data
+        meta:
+          $ref: '#/definitions/Meta'
+      type: object
+  imageAdded200:
+    description: Success adding an image
+    headers:
+      Body:
+        description: 'in: Body'
+    schema:
+      properties:
+        data:
+          $ref: '#/definitions/ImageFormatter'
+        meta:
+          $ref: '#/definitions/Meta'
+      type: object
+  imageDeleted200:
+    description: Success deleting an image
+    headers:
+      Body:
+        description: 'in: Body'
+    schema:
+      properties:
+        data:
+          type: object
+          x-go-name: Data
+        meta:
+          $ref: '#/definitions/Meta'
+      type: object
+  nearbyDestinationsGotten200:
+    description: Success getting nearby destinations
+    headers:
+      Body:
+        description: 'in: Body'
+    schema:
+      properties:
+        data:
+          items:
+            $ref: '#/definitions/NearbyDestinationGottenFormatter'
+          type: array
+          x-go-name: Data
+        meta:
+          $ref: '#/definitions/Meta'
+      type: object
+  ratingAdded200:
+    description: Success adding rating
+    headers:
+      Body:
+        description: 'in: Body'
+    schema:
+      properties:
+        data:
+          $ref: '#/definitions/RatingFormatter'
+        meta:
+          $ref: '#/definitions/Meta'
+      type: object
+  userDeleted200:
+    description: Success deleting a user
+    headers:
+      Body:
+        description: 'in: Body'
+    schema:
+      properties:
+        data:
+          type: object
+          x-go-name: Data
+        meta:
+          $ref: '#/definitions/Meta'
+      type: object
+  userLogged200:
+    description: Success logging in an account
+    headers:
+      Body:
+        description: 'in: Body'
+    schema:
+      properties:
+        data:
+          $ref: '#/definitions/UserLoggedFormatter'
+        meta:
+          $ref: '#/definitions/Meta'
+      type: object
+  userRegistered200:
+    description: Success registering an account
+    headers:
+      Body:
+        description: 'in: Body'
+    schema:
+      properties:
+        data:
+          $ref: '#/definitions/UserRegisteredFormatter'
+        meta:
+          $ref: '#/definitions/Meta'
+      type: object
+  viewAdded200:
+    description: Success adding a view
+    headers:
+      Body:
+        description: 'in: Body'
+    schema:
+      properties:
+        data:
+          $ref: '#/definitions/ViewFormatter'
+        meta:
+          $ref: '#/definitions/Meta'
+      type: object
+schemes:
+- http
+securityDefinitions:
+  Bearer:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
