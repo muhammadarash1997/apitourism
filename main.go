@@ -59,7 +59,7 @@ func main() {
 	// 	c.JSON(http.StatusOK, gin.H{"message": "ok"})
 	// })
 
-	router.Static("/swaggerui/", "apitourism/swaggerui")
+	router.Static("/swagger/", "./swaggerui")
 
 	// For Admin
 	router.POST("/api/destination", userHandler.AuthenticateHandler, destinationHandler.AddDestinationHandler)
