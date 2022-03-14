@@ -745,7 +745,7 @@ responses:
           $ref: '#/definitions/Meta'
       type: object
 schemes:
-- http
+- https
 securityDefinitions:
   Bearer:
     in: header

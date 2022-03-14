@@ -78,7 +78,7 @@ func main() {
 	router.GET("/api/destinations/:userCoordinate", userHandler.AuthenticateHandler, destinationHandler.GetAllDestinationsByLimitPageHandler)
 	router.GET("/api/destinations/nearby/:userCoordinate", userHandler.AuthenticateHandler, destinationHandler.FindNearbyDestinationHandler)
 
-	router.Run()
+	router.Run("https://apitourism.herokuapp.com")
 }
 
 // func docHandler(c *gin.Context) {
