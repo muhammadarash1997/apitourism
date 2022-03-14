@@ -9,7 +9,6 @@ import (
 	"apitourism/rating"
 	"apitourism/user"
 	"apitourism/view"
-	"io/ioutil"
 
 	_ "apitourism/docs" // This line is necessary for go-swagger to find your docs!
 
@@ -54,13 +53,13 @@ func main() {
 	router.Use(auth.CORSMiddleware())
 
 	// For API Test
-	router.GET("/", docHandler)
+	// router.GET("/", docHandler)
 
 	// router.GET("/", func(c *gin.Context) {
 	// 	c.JSON(http.StatusOK, gin.H{"message": "ok"})
 	// })
 
-	// router.Static("/swaggerui", "./swaggerui")
+	router.Static("/swaggerui/", "./swaggerui")
 
 	// For Admin
 	router.POST("/api/destination", userHandler.AuthenticateHandler, destinationHandler.AddDestinationHandler)
@@ -82,11 +81,11 @@ func main() {
 	router.Run()
 }
 
-func docHandler(c *gin.Context) {
-	c.Header("Content-Type", "application/json")
-	data, _ := ioutil.ReadFile("./swaggerui/swagger.json")
-	c.Writer.Write(data)
-}
+// func docHandler(c *gin.Context) {
+// 	c.Header("Content-Type", "application/json")
+// 	data, _ := ioutil.ReadFile("./swaggerui/swagger.json")
+// 	c.Writer.Write(data)
+// }
 
 // input
 // handler mapping input ke struct <-- di sini password masih polos belum di hash dan belum ada createdAt dan updatedAt
