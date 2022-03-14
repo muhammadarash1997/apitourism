@@ -2,7 +2,7 @@
 //
 // This is a API for tourism to search destinations
 //
-//   Schemes: http
+//   Schemes: https
 //   Host: https://apitourism.herokuapp.com
 //   BasePath: /
 //   Version: 1.0.0
