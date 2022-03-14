@@ -10,8 +10,6 @@ require (
 	gorm.io/gorm v1.22.5
 )
 
-require github.com/swagger-api/swagger-ui v4.6.2+incompatible // indirect
-
 require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-contrib/sse v0.1.0 // indirect

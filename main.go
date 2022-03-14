@@ -1,5 +1,3 @@
-//go:generate swagger generate spec
-
 package main
 
 import (
@@ -61,7 +59,7 @@ func main() {
 	// 	c.JSON(http.StatusOK, gin.H{"message": "ok"})
 	// })
 
-	router.Static("/swaggerui/", "./swaggerui")
+	router.Static("/swaggerui/", "./swagger")
 
 	// For Admin
 	router.POST("/api/destination", userHandler.AuthenticateHandler, destinationHandler.AddDestinationHandler)
