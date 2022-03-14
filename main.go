@@ -9,7 +9,7 @@ import (
 	"apitourism/rating"
 	"apitourism/user"
 	"apitourism/view"
-	// "net/http"
+	"io/ioutil"
 
 	_ "apitourism/docs" // This line is necessary for go-swagger to find your docs!
 
@@ -54,14 +54,13 @@ func main() {
 	router.Use(auth.CORSMiddleware())
 
 	// For API Test
+	router.GET("/", docHandler)
+
 	// router.GET("/", func(c *gin.Context) {
 	// 	c.JSON(http.StatusOK, gin.H{"message": "ok"})
 	// })
-	// router.GET("/", func(c *gin.Context) {
-	// 	// c.File("swagger.yaml")
-	// 	c.FileFromFS("swagger.yaml")
-	// })
-	router.Static("/swaggerui", "./swaggerui")
+
+	// router.Static("/swaggerui", "./swaggerui")
 
 	// For Admin
 	router.POST("/api/destination", userHandler.AuthenticateHandler, destinationHandler.AddDestinationHandler)
@@ -81,6 +80,12 @@ func main() {
 	router.GET("/api/destinations/nearby/:userCoordinate", userHandler.AuthenticateHandler, destinationHandler.FindNearbyDestinationHandler)
 
 	router.Run()
+}
+
+func docHandler(c *gin.Context) {
+	c.Header("Content-Type", "application/json")
+	data, _ := ioutil.ReadFile("./swaggerui/swagger.json")
+	c.Writer.Write(data)
 }
 
 // input
