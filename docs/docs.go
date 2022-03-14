@@ -4,7 +4,7 @@
 //
 //   Schemes: http
 //   Host: https://apitourism.herokuapp.com
-//   BasePath: /swagger/
+//   BasePath: /
 //   Version: 1.0.0
 //   Contact: muhammadarash1997@gmail.com
 //
