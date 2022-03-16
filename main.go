@@ -9,9 +9,11 @@ import (
 	"apitourism/rating"
 	"apitourism/user"
 	"apitourism/view"
+	"net/http"
 
 	_ "apitourism/docs" // This line is necessary for go-swagger to find your docs!
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
@@ -50,16 +52,20 @@ func main() {
 
 	router := gin.Default()
 
-	router.Use(auth.CORSMiddleware())
+	router.Use(cors.Default())
 
-	// For API Test
-	// router.GET("/", docHandler)
+	router.Static("/api/docs", "./swagger")
 
-	// router.GET("/", func(c *gin.Context) {
-	// 	c.JSON(http.StatusOK, gin.H{"message": "ok"})
-	// })
+	// swagger:route GET /api/test test testAPI
+	// Test API
+	//
+	// responses:
+	//		200: testAPI200
 
-	router.Static("/swaggerui/", "./swagger")
+	// For API Testing
+	router.GET("/api/test", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"message": "ok"})
+	})
 
 	// For Admin
 	router.POST("/api/destination", userHandler.AuthenticateHandler, destinationHandler.AddDestinationHandler)
@@ -80,12 +86,6 @@ func main() {
 
 	router.Run()
 }
-
-// func docHandler(c *gin.Context) {
-// 	c.Header("Content-Type", "application/json")
-// 	data, _ := ioutil.ReadFile("./swaggerui/swagger.json")
-// 	c.Writer.Write(data)
-// }
 
 // input
 // handler mapping input ke struct <-- di sini password masih polos belum di hash dan belum ada createdAt dan updatedAt

@@ -17,7 +17,7 @@
     },
     "version": "1.0.0"
   },
-  "host": "https://apitourism.herokuapp.com",
+  "host": "apitourism.herokuapp.com",
   "basePath": "/",
   "paths": {
     "/api/bookmark": {
@@ -170,10 +170,10 @@
           {
             "enum": [
               "all",
-              " beach",
-              " natural",
-              " towns",
-              " heritage"
+              "beach",
+              "natural",
+              "towns",
+              "heritage"
             ],
             "type": "string",
             "x-go-name": "Type",
@@ -366,10 +366,10 @@
                   "format": "int64",
                   "enum": [
                     1,
-                    " 2",
-                    " 3",
-                    " 4",
-                    " 5"
+                    2,
+                    3,
+                    4,
+                    5
                   ],
                   "x-go-name": "Rate"
                 },
@@ -387,6 +387,20 @@
           },
           "422": {
             "$ref": "#/responses/errorResponse"
+          }
+        }
+      }
+    },
+    "/api/test": {
+      "get": {
+        "description": "Test API",
+        "tags": [
+          "test"
+        ],
+        "operationId": "testAPI",
+        "responses": {
+          "200": {
+            "$ref": "#/responses/testAPI200"
           }
         }
       }
@@ -1019,6 +1033,23 @@
           },
           "meta": {
             "$ref": "#/definitions/Meta"
+          }
+        }
+      },
+      "headers": {
+        "Body": {
+          "description": "in: Body"
+        }
+      }
+    },
+    "testAPI200": {
+      "description": "Success testing API",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "x-go-name": "Message"
           }
         }
       },

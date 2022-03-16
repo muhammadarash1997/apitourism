@@ -3,7 +3,7 @@
 // This is a API for tourism to search destinations
 //
 //   Schemes: https
-//   Host: https://apitourism.herokuapp.com
+//   Host: apitourism.herokuapp.com
 //   BasePath: /
 //   Version: 1.0.0
 //   Contact: muhammadarash1997@gmail.com
@@ -33,6 +33,15 @@ import (
 	"apitourism/view"
 	"bytes"
 )
+
+// Success testing API
+// swagger:response testAPI200
+type testAPI200 struct {
+	// in: Body
+	Body struct {
+		Message string `json:"message"`
+	}
+}
 
 // Success adding new destination
 // swagger:response destinationAdded200
@@ -268,7 +277,7 @@ type addRatingParams struct {
 	Body struct {
 		DestinationID string `json:"destination_id"`
 		UserID string `json:"user_id"`
-		// enum: 1, 2, 3, 4, 5
+		// enum: 1,2,3,4,5
 		Rate int `json:"rate"`
 	}
 }
@@ -309,7 +318,7 @@ type getNearbyDestinationsParams struct {
 	// The type of destinations as a parameter for finding
 	// in: query
 	// required: true
-	// enum: all, beach, natural, towns, heritage
+	// enum: all,beach,natural,towns,heritage
 	Type string `json:"type"`
 
 	// Use rating as a parameter for finding
