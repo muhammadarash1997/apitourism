@@ -16,6 +16,7 @@
 //
 //   SecurityDefinitions:
 //   Bearer:
+//    description: Type 'Bearer' before you enter your token. ex = Bearer tokentokentoken
 //    type: apiKey
 //    name: Authorization
 //    in: header

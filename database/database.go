@@ -23,7 +23,7 @@ func StartConnection() *gorm.DB {
 	// dbUser := "postgres"
 	// dbPass := "0000"
 	// dbName := "yourdb"
-	
+
 	dbHost := os.Getenv("DB_HOST")
 	dbPort := os.Getenv("DB_PORT")
 	dbUser := os.Getenv("DB_USER")
