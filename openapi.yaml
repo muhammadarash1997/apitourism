@@ -17,7 +17,7 @@ tags:
   - name: rating
   - name: search
 paths:
-  /:
+  /api/test:
     get:
       tags:
         - test
@@ -596,7 +596,7 @@ paths:
           required: true
           schema:
             type: boolean
-      responses:  
+      responses:
         '200':
           description: Success getting nearby destinations
           content:
