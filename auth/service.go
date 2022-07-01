@@ -22,10 +22,9 @@ func NewService() *service {
 
 func (this *service) GenerateToken(userUUID string) (string, error) {
 	secretKey := []byte(os.Getenv("SECRET_KEY"))
-	// secretKey := []byte("S3C123TKEY")
 
 	tokenHourLifespanString := os.Getenv("TOKEN_HOUR_LIFESPAN")
-	// tokenHourLifespanString := "24"
+
 	tokenHourLifespan, err := strconv.Atoi(tokenHourLifespanString)
 	if err != nil {
 		return "", err
@@ -47,7 +46,6 @@ func (this *service) GenerateToken(userUUID string) (string, error) {
 
 func (this *service) ValidateToken(encodedToken string) (*jwt.Token, error) {
 	secretKey := []byte(os.Getenv("SECRET_KEY"))
-	// secretKey := []byte("S3C123TKEY")
 
 	token, err := jwt.Parse(encodedToken, func(token *jwt.Token) (interface{}, error) {
 		_, ok := token.Method.(*jwt.SigningMethodHMAC)
