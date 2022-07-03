@@ -1,7 +1,7 @@
 # API Tourism
 > This is a backend service for API Tourism. API Tourism is used by travelers across Indonesia to search destinations along with complete information
 such as profile, image, type, rating, popularity, and distance to the user current location. User can bookmark a destination, give rating to a destination,
-search destinations, search nearby destinations by type, rating or popularity. The system used for knowing location is Geohash method.
+search destinations, search nearby destinations by type, rating or popularity. The system used for knowing location is Geohash method. Live demo https://apitourism.herokuapp.com/api/docs.
 
 ## Usage
 Create .env file in the root directory of your project. Add environment-specific variables on new lines in the form NAME=VALUE. For example:
