@@ -34,12 +34,12 @@ go run main.go
 - JSON Web Token
 
 ## Usecases
-1. User were be able to register and login.
-2. User were be able to check in attendance.
-    - Employee were be able to add activity.
-3. User were be able to check out attendance.
-4. User were be able to get destinations history by date.
-5. User were be able to get destinations history.
+1. There is service to register and login.
+2. There is service to bookmark destination.
+3. There is service to add the number of destination views.
+3. There is service to give a rate to destination.
+4. There is service to get nearby destinations by type, rating or popularity.
+5. There is service to get all destinations.
 
 ## Code Structure
 The design contains several layers and components and very much similar to onion or clean architecture attempt.
